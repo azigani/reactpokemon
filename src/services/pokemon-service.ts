@@ -77,6 +77,18 @@ static addPokemon(pokemon: Pokemon): Promise<Pokemon>{
 console.log(error);
 
   }
+  static searchPokemon(term: string): Promise<Pokemon[]> {
+    if(this.isDev) {
+      return fetch(`http://localhost:3001/pokemons?q=${term}`)
+      .then(response => response.json())
+      .catch(error => this.handleError(error));
+    }
 
+    return new Promise(resolve => {    
+      const results = this.pokemons.filter(pokemon => pokemon.name.includes(term));
+      resolve(results);
+    });
+
+  }
 
 }
